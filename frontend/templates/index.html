@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drone Security Analyst</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/main.css" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="hdr">
+    <div class="hdr-left">
+      <div class="hdr-logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">DRONE<strong>SEC</strong></span>
+      </div>
+      <div class="hdr-status">
+        <span class="status-dot" id="connDot"></span>
+        <span class="mono" id="connLabel">CONNECTING…</span>
+      </div>
+    </div>
+    <div class="hdr-right mono" id="clock">--:--:-- UTC</div>
+  </header>
+
+  <!-- ── Main grid ── -->
+  <main class="grid">
+
+    <!-- LEFT: Session panel -->
+    <aside class="panel panel--left">
+      <div class="panel-head">
+        <span class="panel-title">SESSIONS</span>
+        <button class="btn btn--sm btn--ghost" id="btnNewSession">＋ NEW</button>
+      </div>
+
+      <!-- New session form -->
+      <div class="form-card hidden" id="newSessionForm">
+        <div class="field">
+          <label>Video ID</label>
+          <input type="text" id="fVideoId" placeholder="vid_001" />
+        </div>
+        <div class="field">
+          <label>Drone ID</label>
+          <input type="text" id="fDroneId" placeholder="drone_alpha" />
+        </div>
+        <div class="field">
+          <label>Video path</label>
+          <input type="text" id="fVideoPath" placeholder="input/demo_patrol.mp4" />
+        </div>
+        <div class="field">
+          <label>Telemetry path</label>
+          <input type="text" id="fTelPath" placeholder="input/demo_telemetry.json" />
+        </div>
+        <div class="form-actions">
+          <button class="btn btn--primary" id="btnIngest">▶ START INGESTION</button>
+          <button class="btn btn--ghost btn--sm" id="btnCancelForm">✕ CANCEL</button>
+        </div>
+        <div id="ingestMsg" class="msg hidden"></div>
+      </div>
+
+      <!-- Session list -->
+      <div id="sessionList" class="session-list"></div>
+    </aside>
+
+    <!-- CENTER: Main content tabs -->
+    <section class="panel panel--center">
+      <div class="tabs">
+        <button class="tab active" data-tab="frames">FRAMES</button>
+        <button class="tab" data-tab="alerts">ALERTS <span class="badge" id="alertBadge">0</span></button>
+        <button class="tab" data-tab="search">SEARCH</button>
+        <button class="tab" data-tab="summary">SUMMARY</button>
+        <button class="tab" data-tab="ask">ASK AI</button>
+      </div>
+      <div class="session-indicator">
+        <span class="mono">SESSION: <span id="activeSessionLabel">—</span></span>
+      </div>
+
+      <!-- Frames tab -->
+      <div class="tab-content active" id="tab-frames">
+        <div class="frames-toolbar">
+          <span class="mono dim" id="framesTotal">No session selected</span>
+          <div class="pagination" id="framesPager"></div>
+        </div>
+        <div id="framesGrid" class="frames-grid"></div>
+      </div>
+
+      <!-- Alerts tab -->
+      <div class="tab-content" id="tab-alerts">
+        <div id="alertsList" class="alerts-list"></div>
+      </div>
+
+      <!-- Search tab -->
+      <div class="tab-content" id="tab-search">
+        <div class="search-bar">
+          <input type="text" id="searchZone" placeholder="Zone (e.g. main_gate)" />
+          <input type="text" id="searchObject" placeholder="Object (e.g. truck)" />
+          <input type="text" id="searchActivity" placeholder="Activity (e.g. loitering)" />
+          <button class="btn btn--primary" id="btnSearch">SEARCH</button>
+        </div>
+        <div class="mono dim" id="searchTotal"></div>
+        <div id="searchResults" class="frames-grid"></div>
+      </div>
+
+      <!-- Summary tab -->
+      <div class="tab-content" id="tab-summary">
+        <div class="summary-actions">
+          <button class="btn btn--primary" id="btnGenSummary">⟳ GENERATE SUMMARY</button>
+        </div>
+        <div id="summaryStats" class="summary-stats hidden"></div>
+        <div id="summaryText" class="summary-text"></div>
+      </div>
+
+      <!-- Ask AI tab -->
+      <div class="tab-content" id="tab-ask">
+        <div class="qa-input-row">
+          <input type="text" id="qaInput" placeholder="Ask: What vehicles were seen near the gate after midnight?" />
+          <button class="btn btn--primary" id="btnAsk">ASK</button>
+        </div>
+        <div id="qaAnswer" class="qa-answer hidden"></div>
+        <div id="qaFrames" class="frames-grid"></div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Frame detail panel -->
+    <aside class="panel panel--right" id="detailPanel">
+      <div class="panel-head">
+        <span class="panel-title">FRAME DETAIL</span>
+        <button class="btn btn--sm btn--ghost" id="btnCloseDetail">✕</button>
+      </div>
+      <div id="detailContent" class="detail-empty">Select a frame to inspect</div>
+    </aside>
+  </main>
+
+  <!-- ── Frame detail modal overlay (mobile) ── -->
+  <div class="overlay hidden" id="overlay"></div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
