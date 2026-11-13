@@ -2,8 +2,6 @@
 
 README — Setup, Architecture & AI Integration Guide
 
-**AI Engineer Assignment · FlytBase · May 2026**
-
 ## Overview
 
 The Drone Security Analyst Agent is an AI prototype for autonomous drone security monitoring. It processes a simulated video patrol alongside aligned drone telemetry, generates structured per-frame intelligence using GPT-4o Vision, and exposes three LLM-powered agents — Alert, Summary, and QA — through a FastAPI backend and a dark-themed single-page web interface.
